@@ -1,0 +1,86 @@
+function [x,a] = func_data(M,XMAX,N,T,THETA,beta)
+
+theta30 = THETA(3);
+theta31 = THETA(4);
+theta32 = THETA(5);
+theta33 = THETA(6);
+
+%% Given initial values, obtain the fixed point
+
+X = linspace(0,XMAX,M)';
+P0(:,1) = ones(M, 1) * 0.6;
+P1(:,1) = 1 - PO(:,1);
+
+iterMAX = 30;
+ERROR = 1e-12;
+
+V = zeros(M,iterMAX);
+for iter = 1:iterMAX
+    V(:,iter) = func_Phi(X,M,PO(:,iter),THETA,beta);
+    PO(:,iter+1) = func_Lambda(X,M,V(:,iter),THETA,beta);
+    if(pdist([PO(:,iter),PO(:,iter+1)]')<ERROR)
+        break
+    end
+end
+P1 = 1 - PO(:,iter+1);
+
+%% DGP
+
+Lv_x = ones(N,T);
+a = zeros(N,T);
+
+for t = 1:T-1
+    for i = 1:N
+        % data a
+        if rand < P1(Lv_x(i,t))
+            % replacement
+            a(i,t) = 1;
+        end
+
+        if a(i,t) == 0
+            r = rand;
+            if Lv_x < M-3
+                if r < theta30
+                    Lv_x(i,t+1) = Lv_x(i,t) + 0;
+                elseif r < theta30 + theta31
+                    Lv_x(i,t+1) = Lv_x(i,t) + 1;
+                elseif r < theta30 + theta31 + theta32
+                    Lv_x(i,t+1) = Lv_x(i,t) + 2;
+                elseif r < theta30 + theta31 + theta32 + theta33
+                    Lv_x(i,t+1) = Lv_x(i,t) + 3;
+                else
+                    Lv_x(i,t+1) = Lv_x(i,t) + 4;
+                end
+            elseif Lv_x(i,t) == M - 3
+                if r < theta30/(theta30 + theta31 + theta32 + theta33)
+                   Lv_x(i,t+1) = Lv_x(i,t) + 0;
+                elseif r < (theta30+theta31)/(theta30 + theta31 + theta32 + theta33)
+                   Lv_x(i,t+1) = Lv_x(i,t) + 1;
+                elseif r < (theta30+theta31+theta32)/(theta30 + theta31 + theta32 + theta33)
+                   Lv_x(i,t+1) = Lv_x(i,t) + 2;
+                else
+                   Lv_x(i,t+1) = Lv_x(i,t) + 3;
+                end
+
+            elseif Lv_x(i,t) == M-2
+                if r < theta30/(theta30 + theta31 + theta32)
+                   Lv_x(i,t+1) = Lv_x(i,t) + 0;
+                elseif r < (theta30+theta31)/(theta30 + theta31 + theta32)
+                   Lv_x(i,t+1) = Lv_x(i,t) + 1;
+                else
+                   Lv_x(i,t+1) = Lv_x(i,t) + 2;
+                end
+            elseif Lv_x(i,t) == M-1
+                if r < theta30/(theta30 + theta31)
+                   Lv_x(i,t+1) = Lv_x(i,t) + 0;
+                else
+                   Lv_x(i,t+1) = Lv_x(i,t) + 1;
+                end
+
+            e
+               
+            
+                   
+
+            
+                    
